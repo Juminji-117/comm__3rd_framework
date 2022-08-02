@@ -11,8 +11,11 @@ public class Container {
     private static Map<Class, Object> objects;
     static {
         objects = new HashMap<>();
-        objects.put(ArticleController.class, new ArticleController());
-        objects.put(HomeController.class, new HomeController());
+        //아래 getControllerNames()에서 했던 구현과 유사
+        Reflections ref = new Reflections("com.ll.exam");
+        for (Class<?> cls : ref.getTypesAnnotatedWith(Controller.class)) {
+            objects.put(cls, Ut.cls.newObj(cls, null));
+        }
     }
 
 
