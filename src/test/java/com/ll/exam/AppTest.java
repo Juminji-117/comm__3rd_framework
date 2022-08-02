@@ -3,10 +3,12 @@ package com.ll.exam;
 import com.ll.exam.article.controller.ArticleController;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+
 public class AppTest {
     @Test
-    // Test 잘 돌아가는지 시험용
     public void junit_assertThat() {
         int rs = 10 + 20;
 
@@ -26,5 +28,13 @@ public class AppTest {
         ArticleController articleController2 = Container.getArticleController();
 
         assertThat(articleController2).isEqualTo(articleController1);
+    }
+
+    @Test
+    public void ioc__Controller들을_스캔하여_수집() {
+        List<String> controllerNames = Container.getAllControllerNames();
+
+        controllerNames.contains("home");
+        controllerNames.contains("article");
     }
 }
