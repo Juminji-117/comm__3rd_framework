@@ -2,6 +2,7 @@ package com.ll.exam;
 
 import com.ll.exam.annotation.Autowired;
 import com.ll.exam.annotation.Controller;
+import com.ll.exam.annotation.Repository;
 import com.ll.exam.annotation.Service;
 import org.reflections.Reflections;
 
@@ -16,6 +17,7 @@ public class Container {
     }
 
     private static void scanComponents() {
+        scanRepositories();
         scanServices();
         scanControllers();
         // 레고 조립
@@ -50,15 +52,22 @@ public class Container {
                 });
     }
 
+    private static void scanRepositories() {
+        Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
+        for (Class<?> cls : ref.getTypesAnnotatedWith(Repository.class)) {
+            objects.put(cls, Ut.cls.newObj(cls, null));
+        }
+    }
+
     private static void scanServices() {
-        Reflections ref = new Reflections("com.ll.exam");
+        Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
         for (Class<?> cls : ref.getTypesAnnotatedWith(Service.class)) {
             objects.put(cls, Ut.cls.newObj(cls, null));
         }
     }
 
     private static void scanControllers() {
-        Reflections ref = new Reflections("com.ll.exam");
+        Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
         for (Class<?> cls : ref.getTypesAnnotatedWith(Controller.class)) {
             objects.put(cls, Ut.cls.newObj(cls, null));
         }
