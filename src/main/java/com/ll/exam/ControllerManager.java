@@ -51,10 +51,14 @@ public class ControllerManager {
             rq.println("해당 요청은 존재하지 않습니다.");
             return;
         }
-        runAction(rq, routeInfos.get(mappingKey));
+        RouteInfo routeInfo = routeInfos.get(mappingKey);
+        rq.setRouteInfo(routeInfo);
+
+        runAction(rq);
     }
 
-    private static void runAction(Rq rq, RouteInfo routeInfo) {
+    private static void runAction(Rq rq) {
+        RouteInfo routeInfo = rq.getRouteInfo();
         Class controllerCls = routeInfo.getControllerCls();
         Method actionMethod = routeInfo.getMethod();
 
